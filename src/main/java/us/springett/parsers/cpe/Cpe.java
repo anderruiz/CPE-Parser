@@ -22,7 +22,6 @@ import us.springett.parsers.cpe.util.Convert;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import us.springett.parsers.cpe.exceptions.CpeEncodingException;
@@ -509,18 +508,31 @@ public class Cpe implements ICpe, Serializable {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 97 * hash + Objects.hashCode(this.part);
-        hash = 97 * hash + Objects.hashCode(this.vendor);
-        hash = 97 * hash + Objects.hashCode(this.product);
-        hash = 97 * hash + Objects.hashCode(this.version);
-        hash = 97 * hash + Objects.hashCode(this.update);
-        hash = 97 * hash + Objects.hashCode(this.edition);
-        hash = 97 * hash + Objects.hashCode(this.language);
-        hash = 97 * hash + Objects.hashCode(this.swEdition);
-        hash = 97 * hash + Objects.hashCode(this.targetSw);
-        hash = 97 * hash + Objects.hashCode(this.targetHw);
-        hash = 97 * hash + Objects.hashCode(this.other);
+        hash = 97 * hash + hashCode(this.part);
+        hash = 97 * hash + hashCode(this.vendor);
+        hash = 97 * hash + hashCode(this.product);
+        hash = 97 * hash + hashCode(this.version);
+        hash = 97 * hash + hashCode(this.update);
+        hash = 97 * hash + hashCode(this.edition);
+        hash = 97 * hash + hashCode(this.language);
+        hash = 97 * hash + hashCode(this.swEdition);
+        hash = 97 * hash + hashCode(this.targetSw);
+        hash = 97 * hash + hashCode(this.targetHw);
+        hash = 97 * hash + hashCode(this.other);
         return hash;
+    }
+    
+    /**
+     * Returns the hash code of a non-{@code null} argument and 0 for
+     * a {@code null} argument.
+     *
+     * @param o an object
+     * @return the hash code of a non-{@code null} argument and 0 for
+     * a {@code null} argument
+     * @see Object#hashCode
+     */
+    public static int hashCode(Object o) {
+        return o != null ? o.hashCode() : 0;
     }
 
     /**
@@ -666,40 +678,59 @@ public class Cpe implements ICpe, Serializable {
             return false;
         }
         final Cpe compareTo = (Cpe) obj;
-        if (!Objects.equals(this.vendor, compareTo.vendor)) {
+        if (!equalsObj(this.vendor, compareTo.vendor)) {
             return false;
         }
-        if (!Objects.equals(this.product, compareTo.product)) {
+        if (!equalsObj(this.product, compareTo.product)) {
             return false;
         }
-        if (!Objects.equals(this.version, compareTo.version)) {
+        if (!equalsObj(this.version, compareTo.version)) {
             return false;
         }
-        if (!Objects.equals(this.update, compareTo.update)) {
+        if (!equalsObj(this.update, compareTo.update)) {
             return false;
         }
-        if (!Objects.equals(this.edition, compareTo.edition)) {
+        if (!equalsObj(this.edition, compareTo.edition)) {
             return false;
         }
-        if (!Objects.equals(this.language, compareTo.language)) {
+        if (!equalsObj(this.language, compareTo.language)) {
             return false;
         }
-        if (!Objects.equals(this.swEdition, compareTo.swEdition)) {
+        if (!equalsObj(this.swEdition, compareTo.swEdition)) {
             return false;
         }
-        if (!Objects.equals(this.targetSw, compareTo.targetSw)) {
+        if (!equalsObj(this.targetSw, compareTo.targetSw)) {
             return false;
         }
-        if (!Objects.equals(this.targetHw, compareTo.targetHw)) {
+        if (!equalsObj(this.targetHw, compareTo.targetHw)) {
             return false;
         }
-        if (!Objects.equals(this.other, compareTo.other)) {
+        if (!equalsObj(this.other, compareTo.other)) {
             return false;
         }
         if (this.part != compareTo.part) {
             return false;
         }
         return true;
+    }
+    
+    /**
+     * Returns {@code true} if the arguments are equal to each other
+     * and {@code false} otherwise.
+     * Consequently, if both arguments are {@code null}, {@code true}
+     * is returned and if exactly one argument is {@code null}, {@code
+     * false} is returned.  Otherwise, equality is determined by using
+     * the {@link Object#equals equals} method of the first
+     * argument.
+     *
+     * @param a an object
+     * @param b an object to be compared with {@code a} for equality
+     * @return {@code true} if the arguments are equal to each other
+     * and {@code false} otherwise
+     * @see Object#equals(Object)
+     */
+    public static boolean equalsObj(Object a, Object b) {
+        return (a == b) || (a != null && a.equals(b));
     }
 
     @Override
@@ -857,7 +888,7 @@ public class Cpe implements ICpe, Serializable {
         final Pattern pattern = Pattern.compile("^([\\d]+?)(.*)$");
         final String[] splitString = s.split("(\\.|:-)");
 
-        final List<String> res = new ArrayList<>();
+        final List<String> res = new ArrayList<String>();
         for (String token : splitString) {
             if (token.matches("^[\\d]+?[A-z]+")) {
                 final Matcher matcher = pattern.matcher(token);

@@ -132,7 +132,9 @@ public final class CpeParser {
                 cb.wfLanguage(Convert.cpeUriToWellFormed(parts[7], lenient));
             }
             return cb.build();
-        } catch (CpeValidationException | CpeEncodingException ex) {
+        } catch (CpeValidationException ex) {
+            throw new CpeParsingException(ex.getMessage());
+        } catch (CpeEncodingException ex) {
             throw new CpeParsingException(ex.getMessage());
         }
     }

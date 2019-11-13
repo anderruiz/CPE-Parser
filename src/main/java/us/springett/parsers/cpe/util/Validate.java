@@ -356,7 +356,14 @@ public final class Validate {
      * @return the number of times the char c is contained in the value
      */
     private static long countCharacter(String value, char c) {
-        return value.chars().filter(s -> s == c).count();
+    	char [] chars = value.toCharArray();
+    	int total = 0;
+    	for (char s : chars) {
+			if(s == c) {
+				total++;
+			}
+		}
+        return total;
     }
 
     /**

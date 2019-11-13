@@ -17,6 +17,7 @@
  */
 package us.springett.parsers.cpe.internal.util;
 
+import java.nio.channels.UnsupportedAddressTypeException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import us.springett.parsers.cpe.exceptions.CpeParsingException;
@@ -75,4 +76,9 @@ public class Cpe23PartIterator implements Iterator<String> {
         pos = end + 1;
         return part;
     }
+
+	@Override
+	public void remove() {
+		throw new UnsupportedOperationException();
+	}
 }
